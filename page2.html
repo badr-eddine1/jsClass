@@ -8,12 +8,75 @@
 <body>
     
 <h3 id="title"></h3>
-
+<div>
+    <input type="text" id="task-input" placeholder="Entrez une tâche">
+    <button id="add-task">Ajouter</button>
+  </div>
+  <div id="error"></div>
+  <div id="todo-list"></div>
     <script>
         let h=document.getElementById("title")
         const urlparams= new URLSearchParams(window.location.search);
         const userName=urlparams.get('user');
         h.textContent=`bienvenue ${userName}`;
+            // Références des éléments
+    const taskInput = document.getElementById('task-input');
+    const addTaskButton = document.getElementById('add-task');
+    const todoList = document.getElementById('todo-list');
+    const error = document.getElementById('error');
+
+    // Liste des tâches pour éviter les doublons
+    const tasks = new Set();
+
+    // Fonction pour ajouter une tâche
+    addTaskButton.addEventListener('click', () => {
+      const task = taskInput.value.trim();
+
+      // Réinitialiser les messages d'erreur
+      error.textContent = '';
+
+      // Vérifier si la tâche est valide
+      if (!task) {
+        error.textContent = 'Veuillez entrer une tâche.';
+        return;
+      }
+
+      // Vérifier si la tâche existe déjà
+      if (tasks.has(task)) {
+        error.textContent = 'Cette tâche existe déjà.';
+        return;
+      }
+
+      // Ajouter la tâche à la liste
+      tasks.add(task);
+      const taskElement = document.createElement('div');
+      taskElement.className = 'task';
+
+      // Créer une checkbox pour la tâche
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+
+      // Ajouter un événement pour marquer la tâche comme complétée
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          label.classList.add('completed');
+        } else {
+          label.classList.remove('completed');
+        }
+      });
+
+      // Créer un label pour afficher la tâche
+      const label = document.createElement('label');
+      label.textContent = task;
+
+      // Ajouter les éléments à la liste
+      taskElement.appendChild(checkbox);
+      taskElement.appendChild(label);
+      todoList.appendChild(taskElement);
+
+      // Réinitialiser le champ de saisie
+      taskInput.value = '';
+    });
 
 
     </script>
